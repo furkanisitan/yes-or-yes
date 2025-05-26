@@ -1,13 +1,12 @@
-import './App.css'
-import AnswerBox from './components/AnswerBox'
+import "./App.css";
+import { FlyingBox } from "./components/boxes";
 
 function App() {
-
   return (
     <>
-      <AnswerBox label="Click Me!" />
+      <FlyingBox label="Click Me!" />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
