@@ -1,10 +1,10 @@
 import "./App.css";
-import { FlyingBox } from "./components/boxes";
+import { FlyingBox, ShakyBox } from "./components/boxes";
 
 function App() {
   return (
     <>
-      <FlyingBox label="Click Me!" />
+      <ShakyBox label="Click Me!" />
     </>
   );
 }

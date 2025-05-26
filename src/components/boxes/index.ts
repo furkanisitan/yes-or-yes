@@ -1,2 +1,2 @@
-export { default as FlyingBox } from "./FlyingBox";
-export { default as ShakyBox } from "./ShakyBox";
+export { default as FlyingBox } from "./vanishing/FlyingBox";
+export { default as ShakyBox } from "./vanishing/ShakyBox";

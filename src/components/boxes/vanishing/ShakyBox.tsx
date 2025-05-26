@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import boxStyle from "./styles";
+import boxStyle from "../styles";
 
 type ShakyBoxProps = {
   label: string;
