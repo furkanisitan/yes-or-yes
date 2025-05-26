@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 
 export type BoxProps = {
   label: string;
+  backgroundColor?: string;
+  onSize?: (size: number) => void;
 };
 
 export type MotionProps = {
@@ -12,10 +14,34 @@ export type MotionProps = {
   transition?: any;
 };
 
-function Box({ label, style, onClick, animate, transition }: BoxProps & MotionProps) {
+function Box({ label, backgroundColor, style, onClick, animate, transition, onSize }: BoxProps & MotionProps) {
+  const labelRef = useRef<HTMLSpanElement>(null);
+  const [boxSize, setBoxSize] = useState(50);
+
+  useLayoutEffect(() => {
+    if (labelRef.current) {
+      const width = labelRef.current.scrollWidth;
+      const height = labelRef.current.scrollHeight;
+      const size = Math.max(50, Math.ceil(Math.sqrt(width * height)));
+      setBoxSize(size);
+      if (onSize) onSize(size);
+    }
+  }, [label, onSize]);
+
   return (
-    <motion.div style={{ ...boxStyle, ...style }} onClick={onClick} animate={animate} transition={transition}>
-      <span>{label}</span>
+    <motion.div
+      style={{
+        ...boxStyle,
+        backgroundColor: backgroundColor ?? boxStyle.backgroundColor,
+        width: boxSize,
+        height: boxSize,
+        ...style,
+      }}
+      onClick={onClick}
+      animate={animate}
+      transition={transition}
+    >
+      <span ref={labelRef}>{label}</span>
     </motion.div>
   );
 }
@@ -23,8 +49,6 @@ function Box({ label, style, onClick, animate, transition }: BoxProps & MotionPr
 export default Box;
 
 const boxStyle: React.CSSProperties = {
-  width: 75,
-  height: 75,
   backgroundColor: "#ff0088",
   display: "flex",
   justifyContent: "center",

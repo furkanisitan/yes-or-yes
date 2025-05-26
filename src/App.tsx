@@ -5,6 +5,7 @@ function App() {
   return (
     <>
       <EscapeBox label="Click Me!" />
+      <EscapeBox label="Click Me!" />
     </>
   );
 }
