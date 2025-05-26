@@ -1,3 +1,3 @@
-export { default as FlyingBox } from "./vanishing/FlyingBox";
-export { default as ShakyBox } from "./vanishing/ShakyBox";
-export { default as EscapeBox } from "./escaping/EscapeBox";
+export { default as FlyingBox } from "./FlyingBox";
+export { default as ShakyBox } from "./ShakyBox";
+export { default as EscapeBox } from "./EscapeBox";
