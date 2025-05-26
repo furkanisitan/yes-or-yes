@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Box, { type BoxProps } from "./Box";
 
 function ShakyBox({ label }: BoxProps) {
