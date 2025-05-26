@@ -1,6 +1,6 @@
 const boxStyle: React.CSSProperties = {
-  width: 100,
-  height: 100,
+  width: 75,
+  height: 75,
   backgroundColor: "#ff0088",
   display: "flex",
   justifyContent: "center",
@@ -9,7 +9,7 @@ const boxStyle: React.CSSProperties = {
   userSelect: "none",
   borderRadius: 8,
   fontWeight: "bold",
-  fontSize: 20,
+  fontSize: 12,
   perspective: 600,
 };
 
