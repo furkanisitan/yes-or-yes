@@ -1,7 +1,29 @@
-import { useState } from "react";
-import Box, { type BoxProps } from "./Box";
+import { useRef, useState } from "react";
+import Box, { type BoxProps, type BoxHandle } from "./Box";
 
-const MARGIN = 20;
+function EscapeBox(props: BoxProps) {
+  const boxRef = useRef<BoxHandle>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleClick = () => {
+    const size = boxRef.current?.getBoxSize() ?? 50;
+    setPosition((prev) => getRandomPosition(prev, size));
+  };
+
+  return <Box
+    ref={boxRef}
+    {...props}
+    animate={position}
+    transition={{ 
+      type: "spring",
+      stiffness: 400,
+      damping: 20
+    }}
+    onClick={handleClick}
+  />;
+}
+
+export default EscapeBox;
 
 function getRandomPosition(prev: { x: number; y: number }, boxSize: number) {
   const width = window.innerWidth - boxSize - MARGIN;
@@ -13,31 +35,8 @@ function getRandomPosition(prev: { x: number; y: number }, boxSize: number) {
     x = Math.floor(Math.random() * width) - width / 2;
     y = Math.floor(Math.random() * height) - height / 2;
     tries++;
-  } while (
-    Math.abs(x - prev.x) < boxSize + MARGIN &&
-    Math.abs(y - prev.y) < boxSize + MARGIN &&
-    tries < 10
-  );
+  } while (Math.abs(x - prev.x) < boxSize + MARGIN && Math.abs(y - prev.y) < boxSize + MARGIN && tries < 10);
   return { x, y };
 }
 
-function EscapeBox(props: BoxProps) {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [boxSize, setBoxSize] = useState(50);
-
-  const handleClick = () => {
-    setPosition((prev) => getRandomPosition(prev, boxSize));
-  };
-
-  return (
-    <Box
-      {...props}
-      onSize={setBoxSize}
-      animate={position}
-      transition={{ type: "spring", stiffness: 400, damping: 20 }}
-      onClick={handleClick}
-    />
-  );
-}
-
-export default EscapeBox;
+const MARGIN = 20;

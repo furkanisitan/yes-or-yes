@@ -1,54 +1,62 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import React, { useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
 
-export type BoxProps = {
+export interface BoxProps {
+  ref?: React.Ref<BoxHandle>;
   label: string;
   backgroundColor?: string;
-  onSize?: (size: number) => void;
-};
+}
 
-export type MotionProps = {
-  style?: React.CSSProperties;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+export interface MotionProps {
   animate?: any;
+  style?: React.CSSProperties;
   transition?: any;
-};
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+}
 
-function Box({ label, backgroundColor, style, onClick, animate, transition, onSize }: BoxProps & MotionProps) {
+export interface BoxHandle {
+  getBoxSize: () => number;
+}
+
+function Box(props: BoxProps & MotionProps) {
   const labelRef = useRef<HTMLSpanElement>(null);
-  const [boxSize, setBoxSize] = useState(50);
+  const [boxSize, setBoxSize] = useState(DEFAULT_BOX_SIZE);
 
   useLayoutEffect(() => {
-    if (labelRef.current) {
-      const width = labelRef.current.scrollWidth;
-      const height = labelRef.current.scrollHeight;
-      const size = Math.max(50, Math.ceil(Math.sqrt(width * height)));
-      setBoxSize(size);
-      if (onSize) onSize(size);
-    }
-  }, [label, onSize]);
+    if (!labelRef.current) return;
+
+    const width = labelRef.current.scrollWidth;
+    const height = labelRef.current.scrollHeight;
+    const size = Math.max(DEFAULT_BOX_SIZE, Math.ceil(Math.sqrt(width * height)));
+    setBoxSize(size);
+  }, [props.label]);
+
+  useImperativeHandle(props.ref, () => ({
+    getBoxSize: () => boxSize,
+  }));
 
   return (
     <motion.div
       style={{
-        ...boxStyle,
-        backgroundColor: backgroundColor ?? boxStyle.backgroundColor,
+        ...DEFAULT_BOX_STYLE,
         width: boxSize,
         height: boxSize,
-        ...style,
+        ...props.style,
+        backgroundColor: props.backgroundColor ?? DEFAULT_BOX_STYLE.backgroundColor,
       }}
-      onClick={onClick}
-      animate={animate}
-      transition={transition}
+      onClick={props.onClick}
+      animate={props.animate}
+      transition={props.transition}
     >
-      <span ref={labelRef}>{label}</span>
+      <span ref={labelRef}>{props.label}</span>
     </motion.div>
   );
 }
 
 export default Box;
 
-const boxStyle: React.CSSProperties = {
+const DEFAULT_BOX_SIZE = 50;
+const DEFAULT_BOX_STYLE: React.CSSProperties = {
   backgroundColor: "#ff0088",
   display: "flex",
   justifyContent: "center",
