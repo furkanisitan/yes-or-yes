@@ -1,12 +1,21 @@
 import { useState } from "react";
-import Box, { type BoxProps } from "./Box";
+import Box from "./Box";
 
-function FlyingBox({ label }: BoxProps) {
+type FlyingBoxProps = {
+  label: string;
+};
+
+function FlyingBox({ label }: FlyingBoxProps) {
   const [isFlying, setIsFlying] = useState(false);
+
+  const handleClick = () => {
+    setIsFlying(true);
+  };
 
   return (
     <Box
       label={label}
+      onClick={handleClick}
       animate={
         isFlying
           ? {
@@ -19,7 +28,6 @@ function FlyingBox({ label }: BoxProps) {
           : { rotate: 0 }
       }
       transition={{ duration: 1 }}
-      onClick={() => setIsFlying(true)}
     />
   );
 }

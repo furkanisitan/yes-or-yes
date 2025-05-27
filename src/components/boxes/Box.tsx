@@ -1,16 +1,9 @@
-import { motion } from "motion/react";
+import { motion, type MotionProps } from "motion/react";
 import React, { useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
 
 export interface BoxProps {
   ref?: React.Ref<BoxHandle>;
   label: string;
-  backgroundColor?: string;
-}
-
-export interface MotionProps {
-  animate?: any;
-  style?: React.CSSProperties;
-  transition?: any;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -19,6 +12,7 @@ export interface BoxHandle {
 }
 
 function Box(props: BoxProps & MotionProps) {
+  const { label, ref, style, ...restProps } = props;
   const labelRef = useRef<HTMLSpanElement>(null);
   const [boxSize, setBoxSize] = useState(DEFAULT_BOX_SIZE);
 
@@ -29,26 +23,23 @@ function Box(props: BoxProps & MotionProps) {
     const height = labelRef.current.scrollHeight;
     const size = Math.max(DEFAULT_BOX_SIZE, Math.ceil(Math.sqrt(width * height)));
     setBoxSize(size);
-  }, [props.label]);
+  }, [label]);
 
-  useImperativeHandle(props.ref, () => ({
+  useImperativeHandle(ref, () => ({
     getBoxSize: () => boxSize,
   }));
 
   return (
     <motion.div
       style={{
-        ...DEFAULT_BOX_STYLE,
         width: boxSize,
         height: boxSize,
-        ...props.style,
-        backgroundColor: props.backgroundColor ?? DEFAULT_BOX_STYLE.backgroundColor,
+        ...DEFAULT_BOX_STYLE,
+        ...style,
       }}
-      onClick={props.onClick}
-      animate={props.animate}
-      transition={props.transition}
+      {...restProps}
     >
-      <span ref={labelRef}>{props.label}</span>
+      <span ref={labelRef}>{label}</span>
     </motion.div>
   );
 }

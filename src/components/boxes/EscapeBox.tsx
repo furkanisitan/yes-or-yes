@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
-import Box, { type BoxProps, type BoxHandle } from "./Box";
+import Box, { type BoxHandle } from "./Box";
 
-function EscapeBox(props: BoxProps) {
+type EscapeBoxProps = {
+  label: string;
+};
+
+function EscapeBox({ label }: EscapeBoxProps) {
   const boxRef = useRef<BoxHandle>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -10,17 +14,19 @@ function EscapeBox(props: BoxProps) {
     setPosition((prev) => getRandomPosition(prev, size));
   };
 
-  return <Box
-    ref={boxRef}
-    {...props}
-    animate={position}
-    transition={{ 
-      type: "spring",
-      stiffness: 400,
-      damping: 20
-    }}
-    onClick={handleClick}
-  />;
+  return (
+    <Box
+      ref={boxRef}
+      label={label}
+      onClick={handleClick}
+      animate={position}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 20,
+      }}
+    />
+  );
 }
 
 export default EscapeBox;

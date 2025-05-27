@@ -1,12 +1,21 @@
 import { useState } from "react";
-import Box, { type BoxProps } from "./Box";
+import Box from "./Box";
 
-function ShakyBox({ label }: BoxProps) {
+type ShakyBoxProps = {
+  label: string;
+};
+
+function ShakyBox({ label }: ShakyBoxProps) {
   const [isShaking, setIsShaking] = useState(false);
+
+  const handleClick = () => {
+    setIsShaking(true);
+  };
 
   return (
     <Box
       label={label}
+      onClick={handleClick}
       animate={
         isShaking
           ? {
@@ -24,7 +33,6 @@ function ShakyBox({ label }: BoxProps) {
           : { scale: 1, x: 0, y: 0, opacity: 1, rotate: 0 }
       }
       transition={{ duration: 1.4 }}
-      onClick={() => setIsShaking(true)}
     />
   );
 }
