@@ -8,14 +8,14 @@ type ShakyBoxProps = {
 function ShakyBox({ label }: ShakyBoxProps) {
   const [isShaking, setIsShaking] = useState(false);
 
-  const handleClick = () => {
+  const handleChoice = () => {
     setIsShaking(true);
   };
 
   return (
     <Box
       label={label}
-      onClick={handleClick}
+      onChoice={handleChoice}
       animate={
         isShaking
           ? {

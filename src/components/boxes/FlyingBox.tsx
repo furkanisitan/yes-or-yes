@@ -8,14 +8,14 @@ type FlyingBoxProps = {
 function FlyingBox({ label }: FlyingBoxProps) {
   const [isFlying, setIsFlying] = useState(false);
 
-  const handleClick = () => {
+  const handleChoice = () => {
     setIsFlying(true);
   };
 
   return (
     <Box
       label={label}
-      onClick={handleClick}
+      onChoice={handleChoice}
       animate={
         isFlying
           ? {

@@ -9,7 +9,7 @@ function EscapeBox({ label }: EscapeBoxProps) {
   const boxRef = useRef<BoxHandle>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  const handleClick = () => {
+  const handleChoice = () => {
     const size = boxRef.current?.getBoxSize() ?? 50;
     setPosition((prev) => getRandomPosition(prev, size));
   };
@@ -18,7 +18,7 @@ function EscapeBox({ label }: EscapeBoxProps) {
     <Box
       ref={boxRef}
       label={label}
-      onClick={handleClick}
+      onChoice={handleChoice}
       animate={position}
       transition={{
         type: "spring",
