@@ -1,11 +1,9 @@
-import "./App.css";
-import { FlyingBox, ShakyBox, EscapeBox } from "./components/boxes";
-
 function App() {
   return (
     <>
-      <EscapeBox label="Click Me!" />
-      <EscapeBox label="Click Me!" />
+    <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
     </>
   );
 }
