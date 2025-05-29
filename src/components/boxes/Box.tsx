@@ -3,27 +3,35 @@ import React, { useImperativeHandle } from "react";
 import { useIsMobile } from "../../hooks";
 
 export interface BoxProps {
-  ref?: React.Ref<BoxHandle>;
   label: string;
+  ref?: React.Ref<BoxHandle>;
+  width?: number;
+  height?: number;
   onChoice?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export interface BoxHandle {
-  getBoxSize: () => number;
+  width: number;
+  height: number;
 }
 
 function Box(props: BoxProps & MotionProps) {
-  const { label, ref, style, onChoice, ...restProps } = props;
+  const { label, ref, width = 100, height = 100, onChoice, ...restProps } = props;
   const isMobile = useIsMobile();
 
   useImperativeHandle(ref, () => ({
-    getBoxSize: () => 100,
+    width,
+    height,
   }));
 
   console.log(isMobile);
   return (
     <motion.div
-      className="bg-yellow-100 text-red-700 rounded-xl w-[100px] h-[100px] flex items-center justify-center font-semibold text-lg cursor-default"
+      className="bg-yellow-100 text-red-700 rounded-xl flex items-center justify-center font-semibold text-lg cursor-default"
+      style={{
+        width,
+        height,
+      }}
       onClick={isMobile ? onChoice : undefined}
       onMouseEnter={isMobile ? undefined : onChoice}
       {...restProps}

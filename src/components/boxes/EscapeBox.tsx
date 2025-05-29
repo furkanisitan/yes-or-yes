@@ -10,8 +10,14 @@ function EscapeBox({ label }: EscapeBoxProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleChoice = () => {
-    const size = boxRef.current?.getBoxSize() ?? 50;
-    setPosition((prev) => getRandomPosition(prev, size));
+    if (!boxRef.current) {
+      console.warn("Box reference is not set.");
+      return;
+    }
+
+    const width = boxRef.current.width;
+    const height = boxRef.current.height;
+    setPosition((prev) => getRandomPosition(prev, width, height));
   };
 
   return (
@@ -31,9 +37,13 @@ function EscapeBox({ label }: EscapeBoxProps) {
 
 export default EscapeBox;
 
-function getRandomPosition(prev: { x: number; y: number }, boxSize: number) {
-  const width = window.innerWidth - boxSize - MARGIN;
-  const height = window.innerHeight - boxSize - MARGIN;
+function getRandomPosition(
+  prev: { x: number; y: number },
+  boxWidth: number,
+  boxHeight: number
+) {
+  const width = window.innerWidth - boxWidth - MARGIN;
+  const height = window.innerHeight - boxHeight - MARGIN;
 
   let x, y;
   let tries = 0;
@@ -41,7 +51,11 @@ function getRandomPosition(prev: { x: number; y: number }, boxSize: number) {
     x = Math.floor(Math.random() * width) - width / 2;
     y = Math.floor(Math.random() * height) - height / 2;
     tries++;
-  } while (Math.abs(x - prev.x) < boxSize + MARGIN && Math.abs(y - prev.y) < boxSize + MARGIN && tries < 10);
+  } while (
+    Math.abs(x - prev.x) < boxWidth + MARGIN &&
+    Math.abs(y - prev.y) < boxHeight + MARGIN &&
+    tries < 10
+  );
   return { x, y };
 }
 
