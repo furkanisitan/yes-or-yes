@@ -1,12 +1,12 @@
 import { useRef, useState } from "react";
-import Box, { type BoxHandle } from "./Box";
+import Box from "./Box";
 
 type EscapeBoxProps = {
   label: string;
 };
 
 function EscapeBox({ label }: EscapeBoxProps) {
-  const boxRef = useRef<BoxHandle>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleChoice = () => {
@@ -15,8 +15,8 @@ function EscapeBox({ label }: EscapeBoxProps) {
       return;
     }
 
-    const width = boxRef.current.width;
-    const height = boxRef.current.height;
+    const width = boxRef.current.offsetWidth;
+    const height = boxRef.current.offsetHeight;
     setPosition((prev) => getRandomPosition(prev, width, height));
   };
 
