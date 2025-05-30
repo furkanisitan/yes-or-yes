@@ -8,6 +8,7 @@ type EscapeBoxProps = {
 function EscapeBox({ label }: EscapeBoxProps) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
 
   const handleChoice = () => {
     if (!boxRef.current) {
@@ -17,6 +18,17 @@ function EscapeBox({ label }: EscapeBoxProps) {
 
     const width = boxRef.current.offsetWidth;
     const height = boxRef.current.offsetHeight;
+
+    if (!boxStyle.position) {
+      setBoxStyle({
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        marginLeft: -(width ?? 100) / 2,
+        marginTop: -(height ?? 100) / 2,
+      });
+    }
+
     setPosition((prev) => getRandomPosition(prev, width, height));
   };
 
@@ -31,6 +43,7 @@ function EscapeBox({ label }: EscapeBoxProps) {
         stiffness: 400,
         damping: 20,
       }}
+      style={boxStyle}
     />
   );
 }
