@@ -1,35 +1,37 @@
-import { motion, type MotionProps } from "motion/react";
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import { useIsMobile } from "../../hooks";
+import { motion, type MotionProps } from 'motion/react';
+import React from 'react';
+import { useIsMobile } from '../../hooks';
 
 export type BoxProps = {
   label: string;
+  ref?: React.Ref<HTMLDivElement>;
+  style?: React.CSSProperties;
+  animate?: MotionProps['animate'];
+  transition?: MotionProps['transition'];
   onChoice?: React.MouseEventHandler<HTMLDivElement>;
 };
 
-const Box = forwardRef<HTMLDivElement, BoxProps & MotionProps>((props, ref) => {
-  const { label, onChoice, style, ...restProps } = props;
+function Box(props: BoxProps) {
+  const { label, ref, style, animate, transition, onChoice } = props;
   const isMobile = useIsMobile();
-  const divRef = useRef<HTMLDivElement>(null);
-
-  useImperativeHandle(ref, () => divRef.current as HTMLDivElement);
 
   return (
     <motion.div
-      ref={divRef}
       className="bg-yellow-100 text-red-700 rounded-xl flex items-center justify-center font-semibold text-lg cursor-default"
+      ref={ref}
       style={{
         width: 100,
         height: 100,
         ...style,
       }}
+      animate={animate}
+      transition={transition}
       onClick={isMobile ? onChoice : undefined}
       onMouseEnter={isMobile ? undefined : onChoice}
-      {...restProps}
     >
       <span>{label}</span>
     </motion.div>
   );
-});
+}
 
 export default Box;
