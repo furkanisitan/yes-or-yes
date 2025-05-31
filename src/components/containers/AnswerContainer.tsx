@@ -1,9 +1,18 @@
-import React from "react";
+import type { Answer } from "../../models";
+import { EscapeBox } from "../boxes";
 
-type AnswerContainerProps = {
-  children: React.ReactNode;
+export type AnswerContainerProps = {
+  answers: Answer[];
 };
 
-export default function AnswerContainer({ children }: AnswerContainerProps) {
-  return <div className="flex justify-center gap-4 flex-wrap">{children}</div>;
-}
+const AnswerContainer = ({ answers }: AnswerContainerProps) => {
+  return (
+    <div className="flex justify-center gap-4 flex-wrap">
+      {answers.map((answer) => (
+        <EscapeBox key={answer.id} answer={answer} />
+      ))}
+    </div>
+  );
+};
+
+export default AnswerContainer;

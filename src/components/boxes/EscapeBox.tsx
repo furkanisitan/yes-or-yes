@@ -1,11 +1,12 @@
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { Answer } from "../../models";
 import Box from "./Box";
 
-type EscapeBoxProps = {
-  label: string;
+export type EscapeBoxProps = {
+  answer: Answer;
 };
 
-function EscapeBox({ label }: EscapeBoxProps) {
+const EscapeBox = ({ answer }: EscapeBoxProps) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const [boxSize, setBoxSize] = useState({ width: 100, height: 100 });
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -28,8 +29,8 @@ function EscapeBox({ label }: EscapeBoxProps) {
         position: "absolute",
         left: "50%",
         top: "50%",
-        marginLeft: -(boxSize.width) / 2,
-        marginTop: -(boxSize.height) / 2,
+        marginLeft: -boxSize.width / 2,
+        marginTop: -boxSize.height / 2,
       });
     }
 
@@ -45,7 +46,7 @@ function EscapeBox({ label }: EscapeBoxProps) {
     >
       <Box
         ref={boxRef}
-        label={label}
+        label={answer.label}
         onChoice={handleChoice}
         animate={position}
         transition={{
@@ -57,7 +58,7 @@ function EscapeBox({ label }: EscapeBoxProps) {
       />
     </div>
   );
-}
+};
 
 export default EscapeBox;
 

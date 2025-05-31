@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Box from "./Box";
 
-type FlyingBoxProps = {
+export type FlyingBoxProps = {
   label: string;
 };
 

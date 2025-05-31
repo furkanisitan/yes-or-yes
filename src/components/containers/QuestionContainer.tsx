@@ -1,15 +1,15 @@
-import React from "react";
+import type { Question } from "../../models";
+import AnswerContainer from "./AnswerContainer";
 
-type QuestionContainerProps = {
-  children: React.ReactNode;
+export type QuestionContainerProps = {
+  question: Question;
 };
 
-export default function QuestionContainer({ children }: QuestionContainerProps) {
+export default function QuestionContainer({ question }: QuestionContainerProps) {
   return (
-    <div className="w-full max-w-5xl text-center mt-4">
-      <div className="mb-2 text-lg opacity-90">Soru 1 / 3</div>
-      <div className="mb-6 text-3xl font-semibold drop-shadow-md">En sevdiğin renk hangisi?</div>
-      {children}
-    </div>
+    <>
+      <div className="mb-6 text-3xl font-semibold drop-shadow-md">{question.label}</div>
+      <AnswerContainer key={question.id} answers={question.answers} />
+    </>
   );
 }

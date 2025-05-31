@@ -1,11 +1,11 @@
 import { motion, type MotionProps } from "motion/react";
-import React, { useImperativeHandle, useRef, forwardRef } from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { useIsMobile } from "../../hooks";
 
-export interface BoxProps {
+export type BoxProps = {
   label: string;
   onChoice?: React.MouseEventHandler<HTMLDivElement>;
-}
+};
 
 const Box = forwardRef<HTMLDivElement, BoxProps & MotionProps>((props, ref) => {
   const { label, onChoice, style, ...restProps } = props;
@@ -21,7 +21,7 @@ const Box = forwardRef<HTMLDivElement, BoxProps & MotionProps>((props, ref) => {
       style={{
         width: 100,
         height: 100,
-        ...style
+        ...style,
       }}
       onClick={isMobile ? onChoice : undefined}
       onMouseEnter={isMobile ? undefined : onChoice}

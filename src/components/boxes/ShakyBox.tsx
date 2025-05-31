@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Box from "./Box";
 
-type ShakyBoxProps = {
+export type ShakyBoxProps = {
   label: string;
 };
 
