@@ -1,34 +1,36 @@
-import { useEffect, useRef, useState } from "react";
-import type { Answer } from "../../models";
-import Box from "./Box";
+import { useEffect, useRef, useState } from 'react';
+import { useRefCurrent } from '../../hooks';
+import type { Answer } from '../../models';
+import Box from './Box';
 
 export type EscapeBoxProps = {
   answer: Answer;
+  ref?: React.Ref<HTMLDivElement>;
 };
 
-const EscapeBox = ({ answer }: EscapeBoxProps) => {
-  const boxRef = useRef<HTMLDivElement>(null);
+const EscapeBox = (props: EscapeBoxProps) => {
+  const { answer } = props;
+  const ref = props.ref ?? useRef<HTMLDivElement>(null);
+  const refCurrent = useRefCurrent(ref);
   const [boxSize, setBoxSize] = useState({ width: 100, height: 100 });
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
 
   useEffect(() => {
-    if (boxRef.current) {
+    if (refCurrent) {
       setBoxSize({
-        width: boxRef.current.offsetWidth,
-        height: boxRef.current.offsetHeight,
+        width: refCurrent.offsetWidth,
+        height: refCurrent.offsetHeight,
       });
     }
   }, []);
 
   const handleChoice = () => {
-    if (!boxRef.current) return;
-
     if (!boxStyle.position) {
       setBoxStyle({
-        position: "absolute",
-        left: "50%",
-        top: "50%",
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
         marginLeft: -boxSize.width / 2,
         marginTop: -boxSize.height / 2,
       });
@@ -45,12 +47,12 @@ const EscapeBox = ({ answer }: EscapeBoxProps) => {
       }}
     >
       <Box
-        ref={boxRef}
+        ref={ref}
         label={answer.label}
         onChoice={handleChoice}
         animate={position}
         transition={{
-          type: "spring",
+          type: 'spring',
           stiffness: 400,
           damping: 20,
         }}
