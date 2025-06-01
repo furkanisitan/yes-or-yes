@@ -7,7 +7,7 @@ export type AnswerContainerProps = {
 
 const AnswerContainer = ({ answers }: AnswerContainerProps) => {
   return (
-    <div className="flex justify-center gap-4 flex-wrap">
+    <div className="flex  flex-wrap justify-center gap-1 md:gap-2 lg:gap-4">
       {answers.map((answer) => (
         <EscapeBox key={answer.id} answer={answer} />
       ))}
