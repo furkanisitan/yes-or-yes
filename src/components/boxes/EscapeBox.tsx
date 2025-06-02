@@ -89,10 +89,7 @@ const EscapeBox = (props: EscapeBoxProps) => {
           stiffness: 400,
           damping: 20,
         }}
-        style={{
-          width: boxStyle.width,
-          height: boxStyle.height,
-        }}
+        style={boxStyle}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
       />
