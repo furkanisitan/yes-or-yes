@@ -1,5 +1,10 @@
-import { SurveyContainer } from "./components/containers";
+import { Route, Routes } from 'react-router-dom';
+import { SurveyContainer } from './components/containers';
 
 export default function App() {
-  return <SurveyContainer id="" />;
+  return (
+    <Routes>
+      <Route path="/surveys/:id" element={<SurveyContainer />} />
+    </Routes>
+  );
 }

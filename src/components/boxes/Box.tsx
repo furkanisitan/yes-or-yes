@@ -1,35 +1,44 @@
 import { motion, type MotionProps } from 'motion/react';
 import React from 'react';
-import { useIsMobile } from '../../hooks';
 
 export type BoxProps = {
-  label: string;
+  type: 'text' | 'image';
+  value: string;
   ref?: React.Ref<HTMLDivElement>;
   style?: React.CSSProperties;
   animate?: MotionProps['animate'];
   transition?: MotionProps['transition'];
-  onChoice?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
 };
 
+function renderBoxContent(type: string, value: string) {
+  if (type === 'image') {
+    return <img src={`/images/${value}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />;
+  } else if (type === 'text') {
+    return <span>{value}</span>;
+  }
+}
+
 function Box(props: BoxProps) {
-  const { label, ref, style, animate, transition, onChoice } = props;
-  const isMobile = useIsMobile();
+  const { type, value, ref, style, animate, transition, onClick, onMouseEnter } = props;
+
+  const boxClass =
+    type === 'image'
+      ? 'flex items-center justify-center font-semibold text-lg cursor-default'
+      : 'bg-yellow-100 text-red-700 rounded-xl flex items-center justify-center font-semibold text-lg cursor-default';
 
   return (
     <motion.div
-      className="bg-yellow-100 text-red-700 rounded-xl flex items-center justify-center font-semibold text-lg cursor-default"
+      className={boxClass}
       ref={ref}
-      style={{
-        width: 100,
-        height: 100,
-        ...style,
-      }}
+      style={style}
       animate={animate}
       transition={transition}
-      onClick={isMobile ? onChoice : undefined}
-      onMouseEnter={isMobile ? undefined : onChoice}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
     >
-      <span>{label}</span>
+      {renderBoxContent(type, value)}
     </motion.div>
   );
 }

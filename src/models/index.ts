@@ -1,9 +1,10 @@
 export interface Answer {
     id: number;
-    label: string;
+    type: 'text' | 'image';
+    value: string;
     isCorrect: boolean;
-    width?: string | number;
-    height?: string | number;
+    width?: number;
+    height?: number;
 }
 
 export interface Question {

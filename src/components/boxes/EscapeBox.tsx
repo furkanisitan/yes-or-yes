@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { useRefCurrent } from '../../hooks';
+import { useState, useEffect } from 'react';
 import type { Answer } from '../../models';
 import Box from './Box';
+import useIsMobile from '../../hooks/useIsMobile';
 
 export type EscapeBoxProps = {
   answer: Answer;
@@ -9,73 +9,95 @@ export type EscapeBoxProps = {
 };
 
 const EscapeBox = (props: EscapeBoxProps) => {
-  const { answer } = props;
-  const ref = props.ref ?? useRef<HTMLDivElement>(null);
-  const refCurrent = useRefCurrent(ref);
-  const [boxSize, setBoxSize] = useState({ width: 100, height: 100 });
+  const isMobile = useIsMobile();
+
+  const answer: Answer = {
+    ...props.answer,
+    width: (props.answer.width ?? 100) * (isMobile ? 0.6 : 1),
+    height: (props.answer.height ?? 100) * (isMobile ? 0.6 : 1),
+  };
+
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
+  const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({
+    width: answer.width,
+    height: answer.height,
+  });
 
   useEffect(() => {
-    if (refCurrent) {
-      setBoxSize({
-        width: refCurrent.offsetWidth,
-        height: refCurrent.offsetHeight,
-      });
-    }
-  }, []);
+    setBoxStyle((prev) => ({
+      ...prev,
+      width: answer.width,
+      height: answer.height,
+    }));
+  }, [isMobile, answer.width, answer.height]);
 
-  const handleChoice = () => {
+  const handleClick = () => {
+    if (answer.isCorrect) {
+      alert(isMobile);
+      return;
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (answer.isCorrect) {
+      return;
+    }
+
     if (!boxStyle.position) {
-      setBoxStyle({
+      setBoxStyle((prev) => ({
+        ...prev,
         position: 'absolute',
         left: '50%',
         top: '50%',
-        marginLeft: -boxSize.width / 2,
-        marginTop: -boxSize.height / 2,
-      });
+        marginLeft: -answer.width! / 2,
+        marginTop: -answer.height! / 2,
+      }));
     }
 
-    setPosition((prev) => getRandomPosition(prev, boxSize.width, boxSize.height));
+    setPosition(getRandomPosition());
   };
+
+  function getRandomPosition() {
+    const margin = 20;
+    const width = window.innerWidth - answer.width! - margin;
+    const height = window.innerHeight - answer.height! - margin;
+
+    let x, y;
+    let tries = 0;
+    do {
+      x = Math.floor(Math.random() * width) - width / 2;
+      y = Math.floor(Math.random() * height) - height / 2;
+      tries++;
+    } while (Math.abs(x - position.x) < answer.width! + margin && Math.abs(y - position.y) < answer.height! + margin && tries < 10);
+    return { x, y };
+  }
 
   return (
     <div
       style={{
-        width: boxSize.width,
-        height: boxSize.height,
+        width: boxStyle.width,
+        height: boxStyle.height,
       }}
     >
       <Box
-        ref={ref}
-        label={answer.label}
-        onChoice={handleChoice}
+        ref={props.ref}
+        type={answer.type}
+        value={answer.value}
         animate={position}
         transition={{
           type: 'spring',
           stiffness: 400,
           damping: 20,
         }}
-        style={boxStyle}
+        style={{
+          width: boxStyle.width,
+          height: boxStyle.height,
+        }}
+        onClick={handleClick}
+        onMouseEnter={handleMouseEnter}
       />
     </div>
   );
 };
 
 export default EscapeBox;
-
-function getRandomPosition(prev: { x: number; y: number }, boxWidth: number, boxHeight: number) {
-  const width = window.innerWidth - boxWidth - MARGIN;
-  const height = window.innerHeight - boxHeight - MARGIN;
-
-  let x, y;
-  let tries = 0;
-  do {
-    x = Math.floor(Math.random() * width) - width / 2;
-    y = Math.floor(Math.random() * height) - height / 2;
-    tries++;
-  } while (Math.abs(x - prev.x) < boxWidth + MARGIN && Math.abs(y - prev.y) < boxHeight + MARGIN && tries < 10);
-  return { x, y };
-}
-
-const MARGIN = 20;
