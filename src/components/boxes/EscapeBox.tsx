@@ -1,86 +1,50 @@
-import { useState, useEffect } from 'react';
-import type { Answer } from '../../models';
+import { useState } from 'react';
+import type { Answer, Position } from '../../models';
 import Box from './Box';
-import useIsMobile from '../../hooks/useIsMobile';
 
 export type EscapeBoxProps = {
   answer: Answer;
   ref?: React.Ref<HTMLDivElement>;
+  position: Position;
+  onMove: () => void;
 };
 
 const EscapeBox = (props: EscapeBoxProps) => {
-  const isMobile = useIsMobile();
-
-  const answer: Answer = {
-    ...props.answer,
-    width: (props.answer.width ?? 100) * (isMobile ? 0.6 : 1),
-    height: (props.answer.height ?? 100) * (isMobile ? 0.6 : 1),
-  };
-
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({
-    width: answer.width,
-    height: answer.height,
-  });
-
-  useEffect(() => {
-    setBoxStyle((prev) => ({
-      ...prev,
-      width: answer.width,
-      height: answer.height,
-    }));
-  }, [isMobile, answer.width, answer.height]);
+  const { answer, ref, position, onMove } = props;
+  const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
 
   const handleClick = () => {
     if (answer.isCorrect) {
-      alert(isMobile);
+      alert('this is the correct answer!');
       return;
     }
   };
 
   const handleMouseEnter = () => {
-    if (answer.isCorrect) {
-      return;
-    }
+    if (answer.isCorrect) return;
 
     if (!boxStyle.position) {
-      setBoxStyle((prev) => ({
-        ...prev,
+      setBoxStyle({
         position: 'absolute',
         left: '50%',
         top: '50%',
-        marginLeft: -answer.width! / 2,
-        marginTop: -answer.height! / 2,
-      }));
+        marginLeft: -answer.width / 2,
+        marginTop: -answer.height / 2,
+      });
     }
 
-    setPosition(getRandomPosition());
+    onMove();
   };
-
-  function getRandomPosition() {
-    const margin = 20;
-    const width = window.innerWidth - answer.width! - margin;
-    const height = window.innerHeight - answer.height! - margin;
-
-    let x, y;
-    let tries = 0;
-    do {
-      x = Math.floor(Math.random() * width) - width / 2;
-      y = Math.floor(Math.random() * height) - height / 2;
-      tries++;
-    } while (Math.abs(x - position.x) < answer.width! + margin && Math.abs(y - position.y) < answer.height! + margin && tries < 10);
-    return { x, y };
-  }
 
   return (
     <div
       style={{
-        width: boxStyle.width,
-        height: boxStyle.height,
+        width: answer.width,
+        height: answer.height,
       }}
     >
       <Box
-        ref={props.ref}
+        ref={ref}
         type={answer.type}
         value={answer.value}
         animate={position}
@@ -89,7 +53,11 @@ const EscapeBox = (props: EscapeBoxProps) => {
           stiffness: 400,
           damping: 20,
         }}
-        style={boxStyle}
+        style={{
+          width: answer.width,
+          height: answer.height,
+          ...boxStyle,
+        }}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
       />
