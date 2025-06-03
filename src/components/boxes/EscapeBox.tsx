@@ -7,16 +7,16 @@ export type EscapeBoxProps = {
   answer: Answer;
   position: Position;
   onMove: () => void;
+  onCorrect: () => void;
 };
 
 const EscapeBox = (props: EscapeBoxProps) => {
-  const { answer, ref, position, onMove } = props;
+  const { ref, answer, position, onMove, onCorrect } = props;
   const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
 
   function handleClick() {
     if (answer.isCorrect) {
-      alert('this is the correct answer!');
-      return;
+      onCorrect?.();
     }
   }
 

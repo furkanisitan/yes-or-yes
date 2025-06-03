@@ -5,6 +5,7 @@ import { ResponsiveHelper } from '../../utils/helpers';
 
 export type AnswerContainerProps = {
   answers: Answer[];
+  onCorrect: () => void;
 };
 
 const AnswerContainer = (props: AnswerContainerProps) => {
@@ -58,6 +59,7 @@ const AnswerContainer = (props: AnswerContainerProps) => {
           answer={answer}
           position={positions[answer.id]}
           onMove={() => handleMove(answer)}
+          onCorrect={props.onCorrect}
         />
       ))}
     </div>

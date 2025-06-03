@@ -16,20 +16,21 @@ export default function SurveyContainer() {
   useEffect(() => {
     async function fetchSurvey() {
       const data = await surveyService.getById(id!);
-      if (data)
-        setSurvey(data!);
+      if (data) setSurvey(data!);
     }
     if (id) fetchSurvey();
   }, [id]);
 
-  if (!survey) return <></>;
+  function handleCorrect() {
+    alert('Correct answer!');
+  }
+
+  if (!survey) return null;
 
   return (
     <div className={`w-full min-h-screen flex flex-col items-center px-4 pt-4 md:pt-8 lg:pt-12 ${theme.gradient} ${theme.text}`}>
-      <h1 className="mb-2 md:mb-4 lg:mb-6 text-xl md:text-3xl lg:text-5xl font-semibold md:font-bold drop-shadow-lg">
-        {survey.title}
-      </h1>
-      <QuestionContainer question={survey.questions[0]} />
+      <h1 className="mb-2 md:mb-4 lg:mb-6 text-xl md:text-3xl lg:text-5xl font-semibold md:font-bold drop-shadow-lg">{survey.title}</h1>
+      <QuestionContainer question={survey.questions[0]} onCorrect={handleCorrect} />
     </div>
   );
 }
