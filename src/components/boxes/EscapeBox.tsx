@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import type { Answer, Position } from '../../models';
 import Box from './Box';
 
@@ -13,14 +13,14 @@ const EscapeBox = (props: EscapeBoxProps) => {
   const { answer, ref, position, onMove } = props;
   const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
 
-  const handleClick = useCallback(() => {
+  function handleClick() {
     if (answer.isCorrect) {
       alert('this is the correct answer!');
       return;
     }
-  }, [answer.isCorrect]);
+  }
 
-  const handleMouseEnter = useCallback(() => {
+  function handleMouseEnter() {
     if (answer.isCorrect) return;
 
     if (!boxStyle.position) {
@@ -32,7 +32,7 @@ const EscapeBox = (props: EscapeBoxProps) => {
     }
 
     onMove();
-  }, [answer.isCorrect, boxStyle.position, onMove]);
+  }
 
   return (
     <div
