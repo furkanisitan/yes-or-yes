@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import type { Answer, Position } from '../../models';
 import Box from './Box';
 
 export type EscapeBoxProps = {
-  answer: Answer;
   ref?: React.Ref<HTMLDivElement>;
+  answer: Answer;
   position: Position;
   onMove: () => void;
 };
@@ -13,26 +13,26 @@ const EscapeBox = (props: EscapeBoxProps) => {
   const { answer, ref, position, onMove } = props;
   const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (answer.isCorrect) {
       alert('this is the correct answer!');
       return;
     }
-  };
+  }, [answer.isCorrect]);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     if (answer.isCorrect) return;
 
     if (!boxStyle.position) {
       setBoxStyle({
         position: 'absolute',
         left: '0',
-        top: '0'
+        top: '0',
       });
     }
 
     onMove();
-  };
+  }, [answer.isCorrect, boxStyle.position, onMove]);
 
   return (
     <div
@@ -45,16 +45,16 @@ const EscapeBox = (props: EscapeBoxProps) => {
         ref={ref}
         type={answer.type}
         value={answer.value}
+        style={{
+          width: answer.width,
+          height: answer.height,
+          ...boxStyle,
+        }}
         animate={boxStyle.position ? position : undefined}
         transition={{
           type: 'spring',
           stiffness: 400,
           damping: 20,
-        }}
-        style={{
-          width: answer.width,
-          height: answer.height,
-          ...boxStyle,
         }}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}

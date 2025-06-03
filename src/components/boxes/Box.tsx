@@ -2,9 +2,9 @@ import { motion, type MotionProps } from 'motion/react';
 import React from 'react';
 
 export type BoxProps = {
+  ref?: React.Ref<HTMLDivElement>;
   type: 'text' | 'image';
   value: string;
-  ref?: React.Ref<HTMLDivElement>;
   style?: React.CSSProperties;
   animate?: MotionProps['animate'];
   transition?: MotionProps['transition'];
