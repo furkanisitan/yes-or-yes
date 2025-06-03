@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useIsMobile } from '../../hooks';
 import type { Answer, Position } from '../../models';
 import EscapeBox from '../boxes/EscapeBox';
 import { ResponsiveHelper } from '../../utils/helpers';
@@ -8,13 +7,16 @@ export type AnswerContainerProps = {
   answers: Answer[];
 };
 
-const AnswerContainer = ({ answers }: AnswerContainerProps) => {
-  const scale = ResponsiveHelper.getScale();
-  const isMobile = useIsMobile();
-
+const AnswerContainer = (props: AnswerContainerProps) => {
   const [positions, setPositions] = useState<Record<number, Position>>({});
-
   const boxRefs = useRef<Record<number, HTMLDivElement | null>>({});
+
+  const scale = ResponsiveHelper.getScale();
+  const answers = props.answers.map((answer) => ({
+    ...answer,
+    width: answer.width * scale,
+    height: answer.height * scale,
+  }));
 
   useEffect(() => {
     if (answers.length > 0 && Object.keys(positions).length === 0) {
@@ -47,21 +49,17 @@ const AnswerContainer = ({ answers }: AnswerContainerProps) => {
 
   return (
     <div className="flex flex-wrap justify-center gap-1 md:gap-2 lg:gap-4">
-      {answers.map((answer) => {
-        const width = isMobile ? answer.width * scale : answer.width;
-        const height = isMobile ? answer.height * scale : answer.height;
-        return (
-          <EscapeBox
-            ref={(el) => {
-              boxRefs.current[answer.id] = el;
-            }}
-            key={answer.id}
-            answer={{ ...answer, width, height }}
-            position={positions[answer.id]}
-            onMove={() => handleMove(answer.id, width, height)}
-          />
-        );
-      })}
+      {answers.map((answer) => (
+        <EscapeBox
+          ref={(el) => {
+            boxRefs.current[answer.id] = el;
+          }}
+          key={answer.id}
+          answer={answer}
+          position={positions[answer.id]}
+          onMove={() => handleMove(answer.id, answer.width, answer.height)}
+        />
+      ))}
     </div>
   );
 };
