@@ -1,5 +1,5 @@
-import { useState } from "react";
-import Box from "./Box";
+import { useState } from 'react';
+import Box from './Box';
 
 export type FlyingBoxProps = {
   label: string;
@@ -14,8 +14,8 @@ function FlyingBox({ label }: FlyingBoxProps) {
 
   return (
     <Box
-      label={label}
-      onChoice={handleChoice}
+      value={label}
+      onClick={handleChoice}
       animate={
         isFlying
           ? {
@@ -23,11 +23,12 @@ function FlyingBox({ label }: FlyingBoxProps) {
               opacity: 0,
               scale: 1.2,
               rotate: 360,
-              transition: { duration: 0.8, ease: "easeIn" },
+              transition: { duration: 0.8, ease: 'easeIn' },
             }
           : { rotate: 0 }
       }
       transition={{ duration: 1 }}
+      type={'text'}
     />
   );
 }
