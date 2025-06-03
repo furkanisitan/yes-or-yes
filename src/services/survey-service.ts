@@ -1,6 +1,6 @@
 // services/surveyService.ts
 import type { Survey } from '../models';
-import httpClient from './httpClient';
+import httpClient from './http-client';
 
 const surveyService = {
   async getById(id: string): Promise<Survey | undefined> {
