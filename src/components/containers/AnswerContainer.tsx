@@ -24,15 +24,15 @@ const AnswerContainer = (props: AnswerContainerProps) => {
     }
   }, [answers]);
 
-  const handleMove = (id: number, boxWidth: number, boxHeight: number) => {
+  function handleMove(answer: Answer) {
     const allPositions = Object.values(positions);
-    const newPosition = getRandomPosition(allPositions, boxWidth, boxHeight);
+    const newPosition = getRandomPosition(allPositions, answer.width, answer.height);
 
     setPositions((prev) => ({
       ...prev,
-      [id]: newPosition,
+      [answer.id]: newPosition,
     }));
-  };
+  }
 
   function getRealPositions(): Record<number, Position> {
     const positions: Record<number, Position> = {};
@@ -57,25 +57,25 @@ const AnswerContainer = (props: AnswerContainerProps) => {
           key={answer.id}
           answer={answer}
           position={positions[answer.id]}
-          onMove={() => handleMove(answer.id, answer.width, answer.height)}
+          onMove={() => handleMove(answer)}
         />
       ))}
     </div>
   );
 };
 
-function getRandomPosition(existingPositions: Position[], boxWidth: number, boxHeight: number): Position {
+function getRandomPosition(existingPositions: Position[], width: number, height: number): Position {
   const margin = 10;
-  const width = window.innerWidth - boxWidth - margin;
-  const height = window.innerHeight - boxHeight - margin;
+  const maxX = window.innerWidth - width - margin;
+  const maxY = window.innerHeight - height - margin;
   let tries = 0;
   let pos: Position;
   do {
-    const x = Math.floor(Math.random() * width);
-    const y = Math.floor(Math.random() * height);
+    const x = Math.floor(Math.random() * maxX);
+    const y = Math.floor(Math.random() * maxY);
     pos = { x, y };
     tries++;
-  } while (existingPositions.some((p) => Math.abs(p.x - pos.x) < boxWidth + margin && Math.abs(p.y - pos.y) < boxHeight + margin) && tries < 100);
+  } while (existingPositions.some((p) => Math.abs(p.x - pos.x) < width + margin && Math.abs(p.y - pos.y) < height + margin) && tries < 100);
   return pos;
 }
 
