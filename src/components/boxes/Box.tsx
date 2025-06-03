@@ -12,33 +12,40 @@ export type BoxProps = {
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
 };
 
-function renderBoxContent(type: string, value: string) {
-  if (type === 'image') {
-    return <img src={`/images/${value}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />;
-  } else if (type === 'text') {
-    return <span>{value}</span>;
+function renderBoxContent(type: 'text' | 'image', value: string): React.ReactNode | null {
+  switch (type) {
+    case 'image':
+      return <img src={`/images/${value}`} alt={value} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />;
+    case 'text':
+      return <span>{value}</span>;
+    default:
+      return null;
+  }
+}
+
+function getBoxClass(type: 'text' | 'image'): string {
+  switch (type) {
+    case 'image':
+      return 'flex items-center justify-center font-semibold text-lg cursor-default';
+    case 'text':
+      return 'bg-yellow-100 text-red-700 rounded-xl flex items-center justify-center font-semibold text-lg cursor-default';
+    default:
+      return '';
   }
 }
 
 function Box(props: BoxProps) {
-  const { type, value, ref, style, animate, transition, onClick, onMouseEnter } = props;
-
-  const boxClass =
-    type === 'image'
-      ? 'flex items-center justify-center font-semibold text-lg cursor-default'
-      : 'bg-yellow-100 text-red-700 rounded-xl flex items-center justify-center font-semibold text-lg cursor-default';
-
   return (
     <motion.div
-      className={boxClass}
-      ref={ref}
-      style={style}
-      animate={animate}
-      transition={transition}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
+      className={getBoxClass(props.type)}
+      ref={props.ref}
+      style={props.style}
+      animate={props.animate}
+      transition={props.transition}
+      onClick={props.onClick}
+      onMouseEnter={props.onMouseEnter}
     >
-      {renderBoxContent(type, value)}
+      {renderBoxContent(props.type, props.value)}
     </motion.div>
   );
 }
