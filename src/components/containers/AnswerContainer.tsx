@@ -2,14 +2,14 @@ import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from '../../hooks';
 import type { Answer, Position } from '../../models';
 import EscapeBox from '../boxes/EscapeBox';
+import { ResponsiveHelper } from '../../utils/helpers';
 
 export type AnswerContainerProps = {
   answers: Answer[];
 };
 
-const MOBILE_SCALE = 0.6;
-
 const AnswerContainer = ({ answers }: AnswerContainerProps) => {
+  const scale = ResponsiveHelper.getScale();
   const isMobile = useIsMobile();
 
   const [positions, setPositions] = useState<Record<number, Position>>({});
@@ -48,8 +48,8 @@ const AnswerContainer = ({ answers }: AnswerContainerProps) => {
   return (
     <div className="flex flex-wrap justify-center gap-1 md:gap-2 lg:gap-4">
       {answers.map((answer) => {
-        const width = isMobile ? answer.width * MOBILE_SCALE : answer.width;
-        const height = isMobile ? answer.height * MOBILE_SCALE : answer.height;
+        const width = isMobile ? answer.width * scale : answer.width;
+        const height = isMobile ? answer.height * scale : answer.height;
         return (
           <EscapeBox
             ref={(el) => {
