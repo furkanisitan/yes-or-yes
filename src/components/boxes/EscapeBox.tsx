@@ -26,10 +26,8 @@ const EscapeBox = (props: EscapeBoxProps) => {
     if (!boxStyle.position) {
       setBoxStyle({
         position: 'absolute',
-        left: '50%',
-        top: '50%',
-        marginLeft: -answer.width / 2,
-        marginTop: -answer.height / 2,
+        left: '0',
+        top: '0'
       });
     }
 
@@ -47,7 +45,7 @@ const EscapeBox = (props: EscapeBoxProps) => {
         ref={ref}
         type={answer.type}
         value={answer.value}
-        animate={position}
+        animate={boxStyle.position ? position : undefined}
         transition={{
           type: 'spring',
           stiffness: 400,
