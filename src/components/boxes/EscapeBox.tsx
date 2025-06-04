@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Answer, Position } from '../../models';
 import Box from './Box';
+import { useIsMobile } from '../../hooks';
 
 export type EscapeBoxProps = {
   ref?: React.Ref<HTMLDivElement>;
@@ -13,16 +14,20 @@ export type EscapeBoxProps = {
 const EscapeBox = (props: EscapeBoxProps) => {
   const { ref, answer, position, onMove, onCorrect } = props;
   const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
+  const isMobile = useIsMobile();
 
   function handleClick() {
-    if (answer.isCorrect) {
-      onCorrect?.();
-    }
+    if (answer.isCorrect) onCorrect?.();
+    else if (isMobile) animateBox();
   }
 
   function handleMouseEnter() {
+    if (isMobile) return;
     if (answer.isCorrect) return;
+    animateBox();
+  }
 
+  function animateBox() {
     if (!boxStyle.position) {
       setBoxStyle({
         position: 'absolute',
