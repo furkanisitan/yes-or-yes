@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export class ResponsiveHelper {
   static getScale(): number {
     const width = window.innerWidth;
@@ -5,5 +7,16 @@ export class ResponsiveHelper {
     if (width < 900) return 0.85;
     if (width < 1200) return 0.95;
     return 1;
+  }
+}
+
+export class UserHelper {
+  static getUserId(): string {
+    let userId = localStorage.getItem('userId');
+    if (!userId) {
+      userId = uuidv4();
+      localStorage.setItem('userId', userId);
+    }
+    return userId;
   }
 }

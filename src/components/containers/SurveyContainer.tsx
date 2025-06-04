@@ -27,12 +27,17 @@ export default function SurveyContainer() {
   }, [id]);
 
   useEffect(() => {
+    if (survey) surveyService.addLog(id!, 'login');
+  }, [survey]);
+
+  useEffect(() => {
     if (showCongrats) fireworksController.current?.run({ speed: 3 });
     else fireworksController.current?.pause();
   }, [showCongrats]);
 
   function handleCorrect() {
     setShowCongrats(true);
+    surveyService.addLog(id!, 'correct');
   }
 
   const handleInit = ({ conductor }: any) => {
