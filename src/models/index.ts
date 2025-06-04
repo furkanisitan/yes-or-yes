@@ -12,11 +12,14 @@ export interface Question {
   id: number;
   label: string;
   answers: Answer[];
+  className?: string;
 }
 
 export interface Survey {
   title: string;
   questions: Question[];
+  className?: string;
+  titleClassName?: string;
 }
 
 export type Position = {

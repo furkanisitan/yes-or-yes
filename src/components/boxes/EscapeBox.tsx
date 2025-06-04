@@ -2,7 +2,6 @@ import { useState } from 'react';
 import type { Answer, Position } from '../../models';
 import Box from './Box';
 import { useIsMobile } from '../../hooks';
-import { a } from 'motion/react-client';
 
 export type EscapeBoxProps = {
   ref?: React.Ref<HTMLDivElement>;
