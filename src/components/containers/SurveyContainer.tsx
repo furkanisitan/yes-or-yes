@@ -62,6 +62,13 @@ export default function SurveyContainer() {
       )}
       <h1 className="mb-2 md:mb-4 lg:mb-6 text-xl md:text-3xl lg:text-5xl font-semibold md:font-bold drop-shadow-lg">{survey.title}</h1>
       <QuestionContainer question={survey.questions[0]} onCorrect={handleCorrect} />
+      <div className="flex-1" />
+      <footer className="mt-8 text-center text-gray-500 text-sm w-full">
+        Made by{' '}
+        <a href="https://github.com/furkanisitan/yes-or-yes" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-700">
+          Furkan Işıtan
+        </a>
+      </footer>
     </div>
   );
 }
