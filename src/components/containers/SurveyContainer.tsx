@@ -47,7 +47,7 @@ export default function SurveyContainer() {
   if (!survey) return null;
 
   return (
-    <div className={`w-full min-h-screen flex flex-col items-center px-4 pt-4 md:pt-8 lg:pt-12 ${theme.gradient} ${theme.text}`}>
+    <div className={`w-full min-h-[100dvh] flex flex-col items-center px-4 pt-4 md:pt-8 lg:pt-12 ${theme.gradient} ${theme.text}`}>
       <Fireworks onInit={handleInit} />
       {showCongrats && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
