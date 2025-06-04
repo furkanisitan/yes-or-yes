@@ -5,6 +5,7 @@ export type BoxProps = {
   ref?: React.Ref<HTMLDivElement>;
   type: 'text' | 'image';
   value: string;
+  className?: string;
   style?: React.CSSProperties;
   animate?: MotionProps['animate'];
   transition?: MotionProps['transition'];
@@ -40,22 +41,10 @@ function renderBoxContent(type: 'text' | 'image', value: string): React.ReactNod
       return null;
   }
 }
-
-function getBoxClass(type: 'text' | 'image'): string {
-  switch (type) {
-    case 'image':
-      return 'flex items-center justify-center font-semibold text-lg cursor-default';
-    case 'text':
-      return 'bg-yellow-100 text-red-700 rounded-xl flex items-center justify-center font-semibold text-lg cursor-default';
-    default:
-      return '';
-  }
-}
-
 function Box(props: BoxProps) {
   return (
     <motion.div
-      className={getBoxClass(props.type)}
+      className={`flex items-center justify-center cursor-default rounded-xl ${props.className}`}
       ref={props.ref}
       style={props.style}
       animate={props.animate}

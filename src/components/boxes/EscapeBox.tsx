@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Answer, Position } from '../../models';
 import Box from './Box';
 import { useIsMobile } from '../../hooks';
+import { a } from 'motion/react-client';
 
 export type EscapeBoxProps = {
   ref?: React.Ref<HTMLDivElement>;
@@ -59,6 +60,7 @@ const EscapeBox = (props: EscapeBoxProps) => {
         ref={ref}
         type={answer.type}
         value={answer.value}
+        className={answer.className}
         style={{
           width: answer.width,
           height: answer.height,

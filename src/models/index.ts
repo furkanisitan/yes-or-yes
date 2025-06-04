@@ -5,6 +5,7 @@ export interface Answer {
   isCorrect: boolean;
   width: number;
   height: number;
+  className?: string;
 }
 
 export interface Question {
