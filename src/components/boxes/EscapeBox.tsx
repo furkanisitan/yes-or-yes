@@ -17,13 +17,22 @@ const EscapeBox = (props: EscapeBoxProps) => {
   const isMobile = useIsMobile();
 
   function handleClick() {
-    if (answer.isCorrect) onCorrect?.();
-    else if (isMobile) animateBox();
+    if (isMobile) return;
+    if (!answer.isCorrect) return;
+    onCorrect?.();
   }
 
   function handleMouseEnter() {
     if (isMobile) return;
     if (answer.isCorrect) return;
+    animateBox();
+  }
+
+  function handleTouchStart() {
+    if (answer.isCorrect) {
+      onCorrect?.();
+      return;
+    }
     animateBox();
   }
 
@@ -63,6 +72,7 @@ const EscapeBox = (props: EscapeBoxProps) => {
         }}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
+        onTouchStart={handleTouchStart}
       />
     </div>
   );

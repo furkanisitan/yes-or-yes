@@ -10,12 +10,30 @@ export type BoxProps = {
   transition?: MotionProps['transition'];
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
+  onTouchStart?: React.TouchEventHandler<HTMLDivElement>;
 };
 
 function renderBoxContent(type: 'text' | 'image', value: string): React.ReactNode | null {
   switch (type) {
     case 'image':
-      return <img src={`/images/${value}`} alt={value} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />;
+      return (
+        <img
+          src={`/images/${value}`}
+          alt={value}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            touchAction: 'none',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            WebkitTouchCallout: 'none',
+          }}
+          draggable={false}
+          onContextMenu={(e) => e.preventDefault()}
+          onTouchStart={(e) => e.preventDefault()}
+        />
+      );
     case 'text':
       return <span>{value}</span>;
     default:
@@ -44,6 +62,7 @@ function Box(props: BoxProps) {
       transition={props.transition}
       onClick={props.onClick}
       onMouseEnter={props.onMouseEnter}
+      onTouchStart={props.onTouchStart}
     >
       {renderBoxContent(props.type, props.value)}
     </motion.div>
