@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const baseURL = import.meta.env.DEV ? 'http://localhost:8888/.netlify/functions' : '/.netlify/functions';
+
 const httpClient = axios.create({
-  baseURL: 'http://localhost:8888/.netlify/functions',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
