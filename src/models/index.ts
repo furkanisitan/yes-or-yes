@@ -18,6 +18,8 @@ export interface Question {
 export interface Survey {
   title: string;
   questions: Question[];
+  congratsTitle?: string;
+  congratsText?: string;
   className?: string;
   titleClassName?: string;
 }
