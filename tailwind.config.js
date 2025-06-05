@@ -11,9 +11,14 @@ export default {
   safelist: [
     // 🎨 Background gradients
     'bg-gradient-to-tr',
+    'bg-gradient-to-br',
     'from-orange-400',
+    'from-amber-900',
+    'from-amber-200',
     'via-white',
+    'via-amber-200',
     'to-yellow-300',
+    'to-lime-200',
 
     // 🎨 Background colors
     'bg-yellow-200',
@@ -23,6 +28,9 @@ export default {
     'text-red-700',
     'text-gray-700',
     'text-white',
+    'text-lime-800',
+    'text-amber-900',
+    'text-green-900',
 
     // 🅰️ Font weights
     'font-normal',
@@ -30,8 +38,14 @@ export default {
     'font-semibold',
     'font-bold',
     'md:font-bold',
+    'md:font-semibold',
 
     // 🔠 Font sizes
     'text-lg',
+    'text-sm',
+    'md:text-lg',
+
+    // 💎 Shadow
+    'shadow-lg',
   ]
 }

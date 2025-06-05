@@ -49,7 +49,7 @@ export default function SurveyContainer() {
       {showCongrats && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-white text-black rounded-2xl shadow-xl p-8 text-center max-w-sm w-full">
-            <h2 className="text-2xl font-bold mb-4">{survey.congratsTitle || '🎉 Tebrikler! 🎉'}</h2>
+            <h2 className="text-lg md:text-2xl font-bold mb-4">{survey.congratsTitle || '🎉 Tebrikler! 🎉'}</h2>
             <p className="mb-6 text-lg italic text-gray-700">{survey.congratsText || 'Doğru cevabı seçeceğini biliyordum 😉'}</p>
             {/* <button onClick={() => setShowCongrats(false)} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">
               Devam Et
