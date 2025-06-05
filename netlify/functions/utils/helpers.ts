@@ -7,6 +7,8 @@ export class AuthHelper {
   }
 
   static isAllowedOrigin(event: any): boolean {
+    if (this.isAuthorized(event)) return true;
+
     const origin = event.headers['origin'] || event.headers['Origin'] || '';
     const referer = event.headers['referer'] || event.headers['Referer'] || '';
     const userAgent = event.headers['user-agent'] || event.headers['User-Agent'] || '';

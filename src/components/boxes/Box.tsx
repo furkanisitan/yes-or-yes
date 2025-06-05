@@ -36,7 +36,7 @@ function renderBoxContent(type: 'text' | 'image', value: string): React.ReactNod
         />
       );
     case 'text':
-      return <span>{value}</span>;
+      return <span style={{ whiteSpace: 'pre-line' }}>{value}</span>;
     default:
       return null;
   }
@@ -44,7 +44,7 @@ function renderBoxContent(type: 'text' | 'image', value: string): React.ReactNod
 function Box(props: BoxProps) {
   return (
     <motion.div
-      className={`flex items-center justify-center cursor-default rounded-xl ${props.className}`}
+      className={`flex items-center justify-center cursor-default rounded-xl text-center ${props.className}`}
       ref={props.ref}
       style={props.style}
       animate={props.animate}
