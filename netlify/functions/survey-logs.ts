@@ -1,5 +1,6 @@
 import { type Handler } from '@netlify/functions';
 import * as admin from 'firebase-admin';
+import { AuthHelper } from './utils/helpers';
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -12,6 +13,8 @@ admin.initializeApp({
 const db = admin.firestore();
 
 async function getSurveyLogs(event: any) {
+  if (!AuthHelper.isAuthorized(event)) return { statusCode: 401, body: 'Unauthorized' };
+
   const surveyId = event.queryStringParameters?.surveyId;
   const userId = event.queryStringParameters?.userId;
 
@@ -38,6 +41,8 @@ async function getSurveyLogs(event: any) {
 }
 
 async function createSurveyLog(event: any) {
+  if (!AuthHelper.isAllowedOrigin(event)) return { statusCode: 403, body: 'Forbidden: Origin not allowed' };
+
   const body = JSON.parse(event.body || '{}');
   const { surveyId, userId, type } = body;
   if (!surveyId || !userId || !type) {
@@ -94,16 +99,20 @@ function getClientIp(headers: Record<string, string | undefined>, fallbackIp?: s
 
 export const handler: Handler = async (event) => {
   try {
+    let response;
     switch (event.httpMethod) {
       case 'GET':
-        return await getSurveyLogs(event);
+        response = await getSurveyLogs(event);
+        break;
       case 'POST':
-        return await createSurveyLog(event);
+        response = await createSurveyLog(event);
+        break;
       default:
-        return { statusCode: 405, body: 'Method Not Allowed' };
+        response = { statusCode: 405, body: 'Method Not Allowed' };
     }
+    return { ...response, headers: AuthHelper.corsHeaders() };
   } catch (error) {
     console.error('Error:', error);
-    return { statusCode: 500, body: JSON.stringify({ error: 'Internal server error' }) };
+    return { statusCode: 500, body: JSON.stringify({ error: 'Internal server error' }), headers: AuthHelper.corsHeaders() };
   }
 };
