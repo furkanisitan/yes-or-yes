@@ -49,7 +49,7 @@ async function createSurveyLog(event: any) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing surveyId, userId or type' }) };
   }
 
-  if (!['login', 'correct'].includes(type)) return { statusCode: 400, body: JSON.stringify({ error: 'Invalid type' }) };
+  if (!['load', 'answer'].includes(type)) return { statusCode: 400, body: JSON.stringify({ error: 'Invalid type' }) };
 
   const surveyDoc = await db.collection('surveys').doc(surveyId).get();
   if (!surveyDoc.exists) {
