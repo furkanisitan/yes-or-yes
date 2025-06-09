@@ -44,7 +44,7 @@ function renderBoxContent(type: 'text' | 'image', value: string): React.ReactNod
 function Box(props: BoxProps) {
   return (
     <motion.div
-      className={`flex items-center justify-center cursor-default rounded-xl text-center px-2 ${props.className}`}
+      className={`flex items-center justify-center cursor-default rounded-xl text-center px-2 ${props.type === 'text' ? props.className : ''}`}
       ref={props.ref}
       style={props.style}
       animate={props.animate}
