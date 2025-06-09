@@ -23,7 +23,7 @@ export class AuthHelper {
   static corsHeaders() {
     return {
       'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-      Vary: 'Origin',
+      'Vary': 'Origin',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     };

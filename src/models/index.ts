@@ -1,35 +1,38 @@
-export interface Answer {
-  id: number;
-  type: 'text' | 'image';
-  value: string;
-  isCorrect: boolean;
-  width: number;
-  height: number;
-  className?: string;
+export interface Survey {
+  title: string;
+  congratsTitle?: string;
+  congratsText?: string;
+  theme: string;
+  questions: Question[];
 }
 
 export interface Question {
   id: number;
   label: string;
   answers: Answer[];
-  className?: string;
 }
 
-export interface Survey {
-  title: string;
-  questions: Question[];
-  congratsTitle?: string;
-  congratsText?: string;
-  className?: string;
-  titleClassName?: string;
+export interface Answer {
+  id: number;
+  type: 'text' | 'image';
+  value: string;
+  isCorrect: boolean;
+  boxSize: BoxSize;
 }
 
-export type Position = {
-  x: number;
-  y: number;
-};
-
-export type BoxSize = {
+export interface BoxSize {
   width: number;
   height: number;
-};
+}
+
+export interface Position {
+  x: number;
+  y: number;
+}
+
+export interface Theme {
+  survey: string;
+  surveyTitle: string;
+  question: string;
+  answer: string;
+}

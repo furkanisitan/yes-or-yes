@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import type { Answer, Position } from '../../models';
 import EscapeBox from '../boxes/EscapeBox';
 import { ResponsiveHelper } from '../../utils/helpers';
+import { useSurveyContext } from '../../contexts/SurveyContext';
 
 export type AnswerContainerProps = {
   answers: Answer[];
@@ -9,14 +10,16 @@ export type AnswerContainerProps = {
 };
 
 const AnswerContainer = (props: AnswerContainerProps) => {
+  const { theme } = useSurveyContext();
   const [positions, setPositions] = useState<Record<number, Position>>({});
   const boxRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   const scale = ResponsiveHelper.getScale();
   const answers = props.answers.map((answer) => ({
     ...answer,
-    width: answer.width * scale,
-    height: answer.height * scale,
+    width: answer.boxSize.width * scale,
+    height: answer.boxSize.height * scale,
+    className: theme.answer,
   }));
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const AnswerContainer = (props: AnswerContainerProps) => {
 
   function handleMove(answer: Answer) {
     const allPositions = Object.values(positions);
-    const newPosition = getRandomPosition(allPositions, answer.width, answer.height);
+    const newPosition = getRandomPosition(allPositions, answer.boxSize.width, answer.boxSize.height);
 
     setPositions((prev) => ({
       ...prev,
