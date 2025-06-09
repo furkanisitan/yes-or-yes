@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Answer, Position } from '../../models';
 import Box from './Box';
 import { useIsMobile } from '../../hooks';
+import { useSurveyContext } from '../../contexts/SurveyContext';
 
 export type EscapeBoxProps = {
   ref?: React.Ref<HTMLDivElement>;
@@ -12,6 +13,7 @@ export type EscapeBoxProps = {
 };
 
 const EscapeBox = (props: EscapeBoxProps) => {
+  const { theme } = useSurveyContext();
   const { ref, answer, position, onMove, onCorrect } = props;
   const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
   const isMobile = useIsMobile();
@@ -51,18 +53,18 @@ const EscapeBox = (props: EscapeBoxProps) => {
   return (
     <div
       style={{
-        width: answer.width,
-        height: answer.height,
+        width: answer.boxSize.width,
+        height: answer.boxSize.height,
       }}
     >
       <Box
         ref={ref}
         type={answer.type}
         value={answer.value}
-        className={answer.className}
+        className={theme.answer}
         style={{
-          width: answer.width,
-          height: answer.height,
+          width: answer.boxSize.width,
+          height: answer.boxSize.height,
           ...boxStyle,
         }}
         animate={boxStyle.position ? position : undefined}

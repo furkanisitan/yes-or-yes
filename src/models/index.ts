@@ -25,14 +25,14 @@ export interface BoxSize {
   height: number;
 }
 
-export interface Position {
-  x: number;
-  y: number;
-}
-
 export interface Theme {
   survey: string;
   surveyTitle: string;
   question: string;
   answer: string;
+}
+
+export type Position = {
+  x: number;
+  y: number;
 }
