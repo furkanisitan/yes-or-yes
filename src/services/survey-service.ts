@@ -18,11 +18,11 @@ const surveyService = {
     });
   },
 
-  async addLog(surveyId: string, type: 'load' | 'answer', payload?: Record<string, any>): Promise<void> {
+  async addLog(surveyId: string, eventType: 'load' | 'answer', payload?: Record<string, any>): Promise<void> {
     const log = {
       surveyId,
       userId: UserHelper.getUserId(),
-      type,
+      type: eventType,
       ...(payload ? payload : {}),
     };
     await httpClient.post('/survey-logs', log);

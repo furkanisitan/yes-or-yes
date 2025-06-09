@@ -16,56 +16,42 @@ async function getSurveyLogs(event: any) {
   if (!AuthHelper.isAuthorized(event)) return { statusCode: 401, body: 'Unauthorized' };
 
   const surveyId = event.queryStringParameters?.surveyId;
-  const userId = event.queryStringParameters?.userId;
+  if (!surveyId) return { statusCode: 400, body: JSON.stringify({ error: 'Missing surveyId parameter' }) };
 
-  if (!surveyId) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing surveyId parameter' }) };
-  }
+  const ipsColRef = db.collection('surveyLogs').doc(surveyId).collection('ips');
+  const ipsSnap = await ipsColRef.get();
 
-  if (userId) {
-    // surveyLogs/{surveyId}/users/{userId}
-    const userDocRef = db.collection('surveyLogs').doc(surveyId).collection('users').doc(userId);
-    const userDocSnap = await userDocRef.get();
-    if (!userDocSnap.exists) {
-      return { statusCode: 404, body: JSON.stringify({ error: 'User log not found' }) };
-    }
-    const data = { userId: userDocSnap.id, ...userDocSnap.data() };
-    return { statusCode: 200, body: JSON.stringify(data) };
-  } else {
-    // surveyLogs/{surveyId}/users
-    const usersColRef = db.collection('surveyLogs').doc(surveyId).collection('users');
-    const usersSnap = await usersColRef.get();
-    const data = usersSnap.docs.map((doc) => ({ userId: doc.id, ...doc.data() }));
-    return { statusCode: 200, body: JSON.stringify(data) };
-  }
+  const data = await Promise.all(
+    ipsSnap.docs.map(async (ipDoc) => {
+      const usersColRef = ipDoc.ref.collection('users');
+      const usersSnap = await usersColRef.get();
+      return {
+        ip: ipDoc.id,
+        users: usersSnap.docs.map((doc) => ({ userId: doc.id, ...doc.data() })),
+      };
+    })
+  );
+
+  return { statusCode: 200, body: JSON.stringify(data) };
 }
 
 async function createSurveyLog(event: any) {
   if (!AuthHelper.isAllowedOrigin(event)) return { statusCode: 403, body: 'Forbidden: Origin not allowed' };
 
   const body = JSON.parse(event.body || '{}');
-  const { surveyId, userId, type } = body;
-  if (!surveyId || !userId || !type) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing surveyId, userId or type' }) };
-  }
+  const { surveyId, userId, eventType } = body;
 
-  if (!['load', 'answer'].includes(type)) return { statusCode: 400, body: JSON.stringify({ error: 'Invalid type' }) };
+  if (!surveyId || !userId || !eventType) return { statusCode: 400, body: JSON.stringify({ error: 'Missing surveyId, userId or eventType' }) };
+  if (!['load', 'answer'].includes(eventType)) return { statusCode: 400, body: JSON.stringify({ error: 'Invalid eventType' }) };
 
   const surveyDoc = await db.collection('surveys').doc(surveyId).get();
-  if (!surveyDoc.exists) {
-    return { statusCode: 404, body: JSON.stringify({ error: 'Survey not found' }) };
-  }
+  if (!surveyDoc.exists) return { statusCode: 404, body: JSON.stringify({ error: 'Survey not found' }) };
 
+  const newLog = { eventType, timestamp: new Date().toISOString() };
   const ip = getClientIp(event.headers, event.ip) || 'none';
   const userLogRef = db.collection('surveyLogs').doc(surveyId).collection('ips').doc(ip).collection('users').doc(userId);
 
-  const newLog = {
-    type,
-    timestamp: new Date().toISOString()
-  };
-
   await userLogRef.set({ logs: admin.firestore.FieldValue.arrayUnion(newLog) }, { merge: true });
-
   return { statusCode: 201, body: JSON.stringify({ success: true }) };
 }
 
