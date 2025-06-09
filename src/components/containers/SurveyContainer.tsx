@@ -23,7 +23,7 @@ export default function SurveyContainer() {
   }, [id]);
 
   useEffect(() => {
-    if (survey) surveyService.addLog(id!, 'login');
+    if (survey) surveyService.addLog(id!, 'load');
   }, [survey]);
 
   useEffect(() => {
@@ -33,7 +33,6 @@ export default function SurveyContainer() {
 
   function handleCorrect() {
     setShowCongrats(true);
-    surveyService.addLog(id!, 'correct');
   }
 
   const handleInit = ({ conductor }: any) => {
@@ -45,7 +44,7 @@ export default function SurveyContainer() {
   const theme = themes[survey.theme || 'default'] || themes['default'];
 
   return (
-    <SurveyContext value={{ theme }}>
+    <SurveyContext value={{ surveyId: id!, theme }}>
       <div className={`w-full min-h-[100dvh] flex flex-col items-center px-4 pt-4 md:pt-8 lg:pt-12 ${theme.survey}`}>
         <Fireworks onInit={handleInit} />
         {showCongrats && (

@@ -1,5 +1,5 @@
 // services/surveyService.ts
-import type { Survey } from '../models';
+import type { Answer, Survey } from '../models';
 import { UserHelper } from '../utils/helpers';
 import httpClient from './http-client';
 
@@ -9,14 +9,23 @@ const surveyService = {
     return response?.data;
   },
 
-  async addLog(surveyId: string, type: 'login' | 'correct') {
+  async addAnswerLog(surveyId: string, answer: Answer): Promise<void> {
+    await this.addLog(surveyId, 'answer', {
+      answerId: answer.id,
+      type: answer.type,
+      value: answer.value,
+      isCorrect: answer.isCorrect,
+    });
+  },
+
+  async addLog(surveyId: string, type: 'load' | 'answer', payload?: Record<string, any>): Promise<void> {
     const log = {
       surveyId,
       userId: UserHelper.getUserId(),
       type,
+      ...(payload ? payload : {}),
     };
-    const response = await httpClient.post('/survey-logs', log);
-    return response.data;
+    await httpClient.post('/survey-logs', log);
   },
 };
 

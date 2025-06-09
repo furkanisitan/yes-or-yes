@@ -56,12 +56,12 @@ async function createSurveyLog(event: any) {
     return { statusCode: 404, body: JSON.stringify({ error: 'Survey not found' }) };
   }
 
-  const userLogRef = db.collection('surveyLogs').doc(surveyId).collection('users').doc(userId);
+  const ip = getClientIp(event.headers, event.ip) || 'none';
+  const userLogRef = db.collection('surveyLogs').doc(surveyId).collection('ips').doc(ip).collection('users').doc(userId);
 
   const newLog = {
     type,
-    timestamp: new Date().toISOString(),
-    ip: getClientIp(event.headers, event.ip),
+    timestamp: new Date().toISOString()
   };
 
   await userLogRef.set({ logs: admin.firestore.FieldValue.arrayUnion(newLog) }, { merge: true });

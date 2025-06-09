@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 import type { Theme } from '../models';
 
 type SurveyContextType = {
+  surveyId: string;
   theme: Theme;
 };
 

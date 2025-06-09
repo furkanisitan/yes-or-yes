@@ -3,6 +3,7 @@ import type { Answer, Position } from '../../models';
 import Box from './Box';
 import { useIsMobile } from '../../hooks';
 import { useSurveyContext } from '../../contexts/SurveyContext';
+import { surveyService } from '../../services';
 
 export type EscapeBoxProps = {
   ref?: React.Ref<HTMLDivElement>;
@@ -13,7 +14,7 @@ export type EscapeBoxProps = {
 };
 
 const EscapeBox = (props: EscapeBoxProps) => {
-  const { theme } = useSurveyContext();
+  const { surveyId, theme } = useSurveyContext();
   const { ref, answer, position, onMove, onCorrect } = props;
   const [boxStyle, setBoxStyle] = useState<React.CSSProperties>({});
   const isMobile = useIsMobile();
@@ -22,6 +23,7 @@ const EscapeBox = (props: EscapeBoxProps) => {
     if (isMobile) return;
     if (!answer.isCorrect) return;
     onCorrect?.();
+    surveyService.addAnswerLog(surveyId, answer);
   }
 
   function handleMouseEnter() {
@@ -33,6 +35,7 @@ const EscapeBox = (props: EscapeBoxProps) => {
   function handleTouchStart() {
     if (answer.isCorrect) {
       onCorrect?.();
+      surveyService.addAnswerLog(surveyId, answer);
       return;
     }
     animateBox();
@@ -48,6 +51,7 @@ const EscapeBox = (props: EscapeBoxProps) => {
     }
 
     onMove();
+    surveyService.addAnswerLog(surveyId, answer);
   }
 
   return (
