@@ -17,8 +17,10 @@ const AnswerContainer = (props: AnswerContainerProps) => {
   const scale = ResponsiveHelper.getScale();
   const answers = props.answers.map((answer) => ({
     ...answer,
-    width: answer.boxSize.width * scale,
-    height: answer.boxSize.height * scale,
+    boxSize: {
+      width: answer.boxSize.width * scale,
+      height: answer.boxSize.height * scale,
+    },
     className: theme.answer,
   }));
 

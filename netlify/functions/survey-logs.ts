@@ -13,7 +13,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 async function getSurveyLogs(event: any) {
-  if (!AuthHelper.isAuthorized(event)) return { statusCode: 401, body: 'Unauthorized' };
+  if (!AuthHelper.isAuthorized(event)) return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }) };
 
   const surveyId = event.queryStringParameters?.surveyId;
   if (!surveyId) return { statusCode: 400, body: JSON.stringify({ error: 'Missing surveyId parameter' }) };
@@ -36,8 +36,8 @@ async function getSurveyLogs(event: any) {
 }
 
 async function createSurveyLog(event: any) {
-  if (!AuthHelper.isAllowedOrigin(event)) return { statusCode: 403, body: 'Forbidden: Origin not allowed' };
-
+  if (!AuthHelper.isAllowedOrigin(event)) return { statusCode: 403, body: JSON.stringify({ error: 'Forbidden: Origin not allowed' }) };
+  
   const body = JSON.parse(event.body || '{}');
   const { surveyId, userId, eventType } = body;
 

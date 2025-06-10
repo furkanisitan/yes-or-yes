@@ -22,7 +22,7 @@ const surveyService = {
     const log = {
       surveyId,
       userId: UserHelper.getUserId(),
-      type: eventType,
+      eventType,
       ...(payload ? payload : {}),
     };
     await httpClient.post('/survey-logs', log);
