@@ -11,14 +11,17 @@ import SurveyNotFound from '../pages/SurveyNotFound';
 export default function SurveyContainer() {
   const { id } = useParams<{ id: string }>();
   const [survey, setSurvey] = useState<Survey | null>(null);
+  const [loading, setLoading] = useState(true); // loading state
   const [showCongrats, setShowCongrats] = useState(false);
 
   const fireworksController = useRef<any>(null);
 
   useEffect(() => {
     async function fetchSurvey() {
+      setLoading(true);
       const data = await surveyService.getById(id!);
-      if (data) setSurvey(data!);
+      setSurvey(data ?? null);
+      setLoading(false);
     }
     if (id) fetchSurvey();
   }, [id]);
@@ -39,6 +42,14 @@ export default function SurveyContainer() {
   const handleInit = ({ conductor }: any) => {
     fireworksController.current = conductor;
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black bg-opacity-60">
+        <span className="text-white text-lg">Yükleniyor...</span>
+      </div>
+    );
+  }
 
   if (!survey) return <SurveyNotFound />;
 
