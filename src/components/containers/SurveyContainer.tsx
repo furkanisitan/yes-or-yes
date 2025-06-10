@@ -6,6 +6,7 @@ import { surveyService } from '../../services';
 import Fireworks from 'react-canvas-confetti/dist/presets/fireworks';
 import { SurveyContext } from '../../contexts/SurveyContext';
 import { themes } from '../../themes';
+import SurveyNotFound from '../pages/SurveyNotFound';
 
 export default function SurveyContainer() {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +40,7 @@ export default function SurveyContainer() {
     fireworksController.current = conductor;
   };
 
-  if (!survey) return null;
+  if (!survey) return <SurveyNotFound />;
 
   const theme = themes[survey.theme || 'default'] || themes['default'];
 
