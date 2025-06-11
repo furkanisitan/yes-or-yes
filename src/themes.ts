@@ -19,4 +19,10 @@ export const themes: Record<string, Theme> = {
     question: 'text-amber-900 font-semibold',
     answer: 'bg-gradient-to-br from-amber-900 via-amber-200 to-lime-200 text-green-900 text-sm md:text-lg font-medium md:font-semibold shadow-lg',
   },
+  pinkyGirl: {
+    survey: 'bg-gradient-to-tr from-pink-200 via-fuchsia-100 to-rose-300',
+    surveyTitle: 'text-pink-700 font-bold md:font-extrabold',
+    question: 'text-fuchsia-700 font-medium',
+    answer: 'bg-pink-300 text-white text-lg font-semibold shadow-md',
+  },
 };
