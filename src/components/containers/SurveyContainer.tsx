@@ -67,7 +67,7 @@ export default function SurveyContainer() {
             </div>
           </div>
         )}
-        <h1 className={`mb-2 md:mb-4 lg:mb-6 text-xl md:text-3xl lg:text-5xl drop-shadow-lg ${theme.surveyTitle}`}>{survey.title}</h1>
+        <h1 className={`mb-4 md:mb-6 lg:mb-8 text-xl md:text-3xl lg:text-5xl drop-shadow-lg ${theme.surveyTitle}`}>{survey.title}</h1>
         <QuestionContainer question={survey.questions[0]} onCorrect={handleCorrect} />
         <div className="flex-1" />
         <footer className="mt-8 text-center text-gray-500 text-sm w-full">

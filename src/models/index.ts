@@ -10,6 +10,7 @@ export interface Question {
   id: number;
   label: string;
   answers: Answer[];
+  note?: string;
 }
 
 export interface Answer {
@@ -30,6 +31,7 @@ export interface Theme {
   surveyTitle: string;
   question: string;
   answer: string;
+  note: string
 }
 
 export type Position = {
